@@ -25,7 +25,7 @@ protected:
 
 
     // member functions - alphabetically (sort of - some are grouped by functionality)
-            double          CalculateConvectiveEnvelopeMass() const;
+            double          CalculateConvectiveEnvelopeMass() const; //removed const and it fixed some compilation
 
     static  double          CalculateCoreMassAt2ndDredgeUp_Static(const double p_McBAGB);
             double          CalculateCoreMassAtBAGB(const double p_Mass) const;
@@ -42,7 +42,7 @@ protected:
     static  double          CalculateCoreMass_Luminosity_Lx_Static(const DBL_VECTOR &p_GBParams);
     static  double          CalculateCoreMass_Luminosity_Mx_Static(const DBL_VECTOR &p_GBParams);
 
-            double          CalculateCriticalMassRatio(const bool p_AccretorIsDegenerate) const; 
+            double          CalculateCriticalMassRatio(const bool p_AccretorIsDegenerate) const;
 
             void            CalculateGBParams(const double p_Mass, DBL_VECTOR &p_GBParams);
     static  void            CalculateGBParams_Static(const double p_Mass, const double p_LogMetallicityXi, const DBL_VECTOR &p_MassCutoffs, const DBL_VECTOR &p_AnCoefficients, const DBL_VECTOR &p_BnCoefficients, DBL_VECTOR &p_GBParams);
@@ -106,7 +106,7 @@ protected:
 
     virtual double          CalculateRemnantLuminosity() const;
             STELLAR_TYPE    CalculateRemnantTypeByMuller2016(const double p_COCoreMass);
-	
+
     virtual double          CalculateRemnantRadius() const;
 
             double          CalculateThermalMassLossRate() const                                            { return (m_Mass - m_CoreMass) / CalculateThermalTimescale(); }     // Use class member variables
@@ -115,7 +115,7 @@ protected:
             void            CalculateTimescales()                                                           { CalculateTimescales(m_Mass0, m_Timescales); }                     // Use class member variables
 
             double          CalculateZeta(ZETA_PRESCRIPTION p_ZetaPrescription)			            { return 0.0; }
-    
+
     virtual void            PerturbLuminosityAndRadius();
 
             STELLAR_TYPE    ResolveSupernova();
@@ -124,11 +124,11 @@ protected:
             STELLAR_TYPE    ResolvePairInstabilitySN();
             STELLAR_TYPE    ResolvePulsationalPairInstabilitySN();
             STELLAR_TYPE    ResolveTypeIIaSN();
-    
+
             void            UpdateAgeAfterMassLoss() { }                                                                                                                        // NO-OP for most stellar types
 
             void            UpdateInitialMass() { }                                                                                                                             // NO-OP for most stellar types
-    
+
             void            UpdateMinimumCoreMass()  {}                                                                                                                 // NO-OP for most stellar types
 
 };

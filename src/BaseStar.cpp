@@ -26,7 +26,7 @@ BaseStar::BaseStar() {
 }
 
 
-BaseStar::BaseStar(const unsigned long int p_RandomSeed, 
+BaseStar::BaseStar(const unsigned long int p_RandomSeed,
                    const double            p_MZAMS,
                    const double            p_Metallicity,
                    const KickParameters    p_KickParameters,
@@ -42,7 +42,7 @@ BaseStar::BaseStar(const unsigned long int p_RandomSeed,
     m_Error               = ERROR::NONE;                                                            // clear error flag
 
     m_CHE                 = false;                                                                  // initially
-    
+
     // Initialise member variables from input parameters
     // (kick parameters initialised below - see m_SupernovaDetails)
     m_RandomSeed          = p_RandomSeed;
@@ -784,7 +784,7 @@ double BaseStar::CalculateAlpha4() const {
     double MHeF_5    = MHeF * MHeF * MHeF * MHeF * MHeF;    // pow() is slow - use multiplication
     double tBGB_MHeF = CalculateLifetimeToBGB(MHeF);        // tBGB for mass M = MHeF
     double tHe_MHeF  = tBGB_MHeF * (b[41] * PPOW(MHeF, b[42]) + b[43] * MHeF_5) / (b[44] + MHeF_5);
-    
+
     return ((tHe_MHeF - b[39]) / b[39]);
 
 #undef massCutoffs
@@ -1086,20 +1086,20 @@ double BaseStar::CalculateLambdaLoveridgeEnergyFormalism(const double p_EnvMass,
 }
 
 
-/* 
+/*
  * Wrapper function to return Nanjing lambda based on options
- * 
- * 
+ *
+ *
  * double BaseStar::CalculateLambdaNanjing()
- * 
+ *
  * @return                                      Common envelope lambda parameter
- */ 
+ */
 double BaseStar::CalculateLambdaNanjing() const {
 
     double mass = m_MZAMS;
     double lambda = 0.0;
     if (OPTIONS->CommonEnvelopeLambdaNanjingUseRejuvenatedMass()) {mass = m_Mass0;}                              // Use rejuvenated mass to calculate lambda instead of true birth mass
-    
+
     if (OPTIONS->CommonEnvelopeLambdaNanjingEnhanced()) {                                                        // If using enhanced Nanjing lambda's
         if (OPTIONS->CommonEnvelopeLambdaNanjingInterpolateInMass()) {
             if (OPTIONS->CommonEnvelopeLambdaNanjingInterpolateInMetallicity()) {
@@ -1128,14 +1128,14 @@ double BaseStar::CalculateLambdaNanjing() const {
 }
 
 
-/* 
+/*
  * Calculate mass- and metallicity-interpolated Nanjing lambda
- * 
- * 
+ *
+ *
  * double BaseStar::CalculateMassAndZInterpolatedLambdaNanjing(const double p_Mass, const double p_Z)
- * 
+ *
  * @return                                      Common envelope lambda parameter
- */ 
+ */
 double BaseStar::CalculateMassAndZInterpolatedLambdaNanjing(const double p_Mass, const double p_Z) const {
 
     double lambda = 0.0;
@@ -1155,16 +1155,16 @@ double BaseStar::CalculateMassAndZInterpolatedLambdaNanjing(const double p_Mass,
 }
 
 
-/* 
+/*
  * Interpolate Nanjing lambda in mass for a given metallicity
- * 
- * 
+ *
+ *
  * double BaseStar::CalculateMassInterpolatedLambdaNanjing(const int p_Zind)
- * 
+ *
  * @param   [IN]    p_Zind                      Index of metallicity (0 = pop II metallicity, 1 = pop I metallicity)
  * @param   [IN]    p_Mass                      Mass / Msun to evaluate lambda with
  * @return                                      Common envelope lambda parameter
- */ 
+ */
 double BaseStar::CalculateMassInterpolatedLambdaNanjing(const double p_Mass, const int p_Zind) const {
 
     double lambda = 0.0;
@@ -1189,16 +1189,16 @@ double BaseStar::CalculateMassInterpolatedLambdaNanjing(const double p_Mass, con
 }
 
 
-/* 
+/*
  * Interpolate Nanjing lambda in metallicity for a given mass
- * 
- * 
+ *
+ *
  * double BaseStar::CalculateZInterpolatedLambdaNanjing(const int p_Zind)
- * 
+ *
  * @param   [IN]    p_Z                         Metallicity
  * @param   [IN]    p_MassInd                   Index specifying donor mass (see NANJING_MASSES in constants.h)
  * @return                                      Common envelope lambda parameter
- */ 
+ */
 double BaseStar::CalculateZInterpolatedLambdaNanjing(const double p_Z, const int p_MassInd) const {
 
     double lambda = 0.0;
@@ -1218,14 +1218,14 @@ double BaseStar::CalculateZInterpolatedLambdaNanjing(const double p_Z, const int
 }
 
 
-/* 
+/*
  * Returns index in NANJING_MASSES corresponding to nearest mass model computed by Xu & Li (2010)
- * 
- * 
+ *
+ *
  * double BaseStar::FindLambdaNanjingNearestMassIndex(const double p_Mass)
- * 
+ *
  * @return                                      Index in NANJING_MASSES
- */ 
+ */
 double BaseStar::FindLambdaNanjingNearestMassIndex(const double p_Mass) const {
 
     if (p_Mass < NANJING_MASSES_MIDPOINTS[0]) {                                                                  // M < 1.5 Msun, use lambda for the 1 Msun model
@@ -1295,27 +1295,27 @@ double BaseStar::CalculateZadiabaticSPH(const double p_CoreMass) const {
  * @return                                      Adiabatic exponent
  */
 double BaseStar::CalculateZadiabatic(ZETA_PRESCRIPTION p_ZetaPrescription) {
-    
+
     double zeta = 0.0;                                            // default value
-    
+
     switch (p_ZetaPrescription) {                                 // which prescription?
         case ZETA_PRESCRIPTION::SOBERMAN:                         // SOBERMAN: Soberman, Phinney, and van den Heuvel, 1997, eq 61
             zeta = CalculateZadiabaticSPH(m_CoreMass);
             break;
-            
+
         case ZETA_PRESCRIPTION::HURLEY:                          // HURLEY: Hurley, Tout, and Pols, 2002, eq 56
             zeta = CalculateZadiabaticHurley2002(m_CoreMass);
             break;
-            
+
         case ZETA_PRESCRIPTION::ARBITRARY:                       // ARBITRARY: user program options thermal zeta value
             zeta = OPTIONS->ZetaAdiabaticArbitrary();
             break;
-            
+
         default:                                                    // unknown common envelope prescription - shouldn't happen
             m_Error = ERROR::UNKNOWN_ZETA_PRESCRIPTION;          // set error value
             SHOW_ERROR(m_Error);                                    // warn that an error occurred
     }
-    
+
     return zeta;
 }
 
@@ -1336,7 +1336,7 @@ void BaseStar::CalculateLambdas(const double p_EnvMass) {
     m_Lambdas.fixed          = OPTIONS->CommonEnvelopeLambda();
 	m_Lambdas.nanjing        = CalculateLambdaNanjing();
 	m_Lambdas.loveridge      = CalculateLambdaLoveridgeEnergyFormalism(p_EnvMass, false);
-	m_Lambdas.loveridgeWinds = CalculateLambdaLoveridgeEnergyFormalism(p_EnvMass, true);      
+	m_Lambdas.loveridgeWinds = CalculateLambdaLoveridgeEnergyFormalism(p_EnvMass, true);
 	m_Lambdas.kruckow        = CalculateLambdaKruckow(m_Radius, OPTIONS->CommonEnvelopeSlopeKruckow());
 	m_Lambdas.kruckowTop     = CalculateLambdaKruckow(m_Radius, -2.0 / 3.0);
 	m_Lambdas.kruckowMiddle  = CalculateLambdaKruckow(m_Radius, -4.0 / 5.0);
@@ -1626,8 +1626,8 @@ double BaseStar::CalculateMassLossRateNieuwenhuijzenDeJager() const {
  * Calculate LBV-like mass loss rate for stars beyond the Humphreys-Davidson limit (Humphreys & Davidson 1994)
  *
  * Sets class member variable m_LBVphaseFlag if necessary
- * 
- *  
+ *
+ *
  * double CalculateMassLossRateLBV(const LBV_PRESCRIPTION p_LBV_prescription)
  *
  * @return                                      LBV-like mass loss rate (in Msol yr^{-1})
@@ -1638,7 +1638,7 @@ double BaseStar::CalculateMassLossRateLBV(const LBV_PRESCRIPTION p_LBV_prescript
     if ((utils::Compare(m_Luminosity, LBV_LUMINOSITY_LIMIT_STARTRACK) > 0) && (utils::Compare(HD_limit_factor, 1.0) > 0)) {     // check if luminous blue variable
 		m_LBVphaseFlag = true;                                                                                                  // mark the star as LBV
         m_DominantMassLossRate = MASS_LOSS_TYPE::LUMINOUS_BLUE_VARIABLE;
-        
+
         switch (p_LBV_prescription) {                                                                                           // decide which LBV prescription to use
             case LBV_PRESCRIPTION::NONE:
                 rate = 0.0;
@@ -1837,7 +1837,7 @@ double BaseStar::CalculateMassLossRateVink() {
     double LBVRate = CalculateMassLossRateLBV(OPTIONS->LuminousBlueVariablePrescription());                         // start with LBV winds (can be, and is often, 0.0)
     double otherWindsRate = 0.0;
 
-    if (m_DominantMassLossRate != MASS_LOSS_TYPE::LUMINOUS_BLUE_VARIABLE || 
+    if (m_DominantMassLossRate != MASS_LOSS_TYPE::LUMINOUS_BLUE_VARIABLE ||
         OPTIONS->LuminousBlueVariablePrescription() == LBV_PRESCRIPTION::HURLEY_ADD ) {                             // check whether we should add other winds to the LBV winds (always for HURLEY_ADD prescription, only if not in LBV regime for others)
 
         double teff = m_Temperature * TSOL;                                                                         // change to Kelvin so it can be compared with values as stated in Vink prescription
@@ -1993,12 +1993,12 @@ void BaseStar::ResolveMassLoss() {
 
     if (OPTIONS->UseMassLoss()) {
         m_Mass = CalculateMassLossValues(true, true);                           // calculate new values assuming mass loss applied
-        
+
         m_HeCoreMass=std::min(m_HeCoreMass,m_Mass);                             // update He mass if mass loss is happening from He stars
-        
+
         m_COCoreMass=std::min(m_COCoreMass,m_Mass);                             // Not expected, only a precaution to avoid inconsistencies
         m_CoreMass=std::min(m_CoreMass, m_Mass);
-        
+
         UpdateInitialMass();                                                    // update effective initial mass (MS, HG & HeMS)
         UpdateAgeAfterMassLoss();                                               // update age (MS, HG & HeMS)
         ApplyMassTransferRejuvenationFactor();                                  // apply age rejuvenation factor
@@ -2091,7 +2091,7 @@ DBL_DBL BaseStar::CalculateMassAcceptanceRate(const double p_DonorMassRate, cons
  * @return                                      Thermal mass acceptance rate
  */
 double BaseStar::CalculateThermalMassAcceptanceRate(const double p_Radius) const {
-    
+
     switch( OPTIONS->MassTransferThermallyLimitedVariation() ) {
         case MT_THERMALLY_LIMITED_VARIATION::RADIUS_TO_ROCHELOBE:
             return (m_Mass - m_CoreMass) / CalculateThermalTimescale(p_Radius) ;            // uses provided accretor radius (should be Roche lobe radius in practice)
@@ -2477,11 +2477,11 @@ double BaseStar::CalculateNuclearTimescale_Static(const double p_Mass, const dou
 /*
  * Calculate thermal timescale
  *
- * pre-factor from Kalogera & Webbink 1996 (https://arxiv.org/abs/astro-ph/9508072), equation 2, 
+ * pre-factor from Kalogera & Webbink 1996 (https://arxiv.org/abs/astro-ph/9508072), equation 2,
  * combined with p_Mass * p_EnvMass case from equation 61 from https://arxiv.org/abs/astro-ph/0201220 for k in {2,3,4,5,6,8,9}
  * [note that equation 61 of BSE (https://arxiv.org/abs/astro-ph/0201220) approximates this with a value a factor of 3 smaller]
- * 
- * 
+ *
+ *
  * double CalculateThermalTimescale(const double p_Radius) const
  *
  * @param   [IN]    p_Radius                    Radius in Rsol
@@ -2489,7 +2489,7 @@ double BaseStar::CalculateNuclearTimescale_Static(const double p_Mass, const dou
  *
  * The p_Radius parameter is to accommodate the call (of this function) in BaseBinaryStar::CalculateMassTransfer()
 */
-double BaseStar::CalculateThermalTimescale(const double p_Radius) const {   
+double BaseStar::CalculateThermalTimescale(const double p_Radius) const {
     return 31.4 * m_Mass * (m_Mass == m_CoreMass ? m_Mass : m_Mass - m_CoreMass) / (p_Radius * m_Luminosity); // G*Msol^2/(Lsol*Rsol) ~ 31.4 Myr (~ 30 Myr in Kalogera & Webbink)
 }
 
@@ -2692,18 +2692,18 @@ double BaseStar::DrawRemnantKickMuller(const double p_COCoreMass) const {
 /*
  * Draw kick magnitude per Mandel and Mueller, 2020
  *
- * double DrawRemnantKickMullerMandel(const double p_COCoreMass, 
+ * double DrawRemnantKickMullerMandel(const double p_COCoreMass,
  *                                    const double p_Rand,
  *                                    const double p_RemnantMass)
- * 
+ *
  * @param   [IN]    p_COCoreMass                Carbon Oxygen core mass of exploding star (Msol)
  * @param   [IN]    p_Rand                      Random number between 0 and 1 used for drawing from the distribution
  * @param   [IN]    p_RemnantMass               Mass of the remnant (Msol)
  * @return                                      Drawn kick magnitude (km s^-1)
  */
-double BaseStar::DrawRemnantKickMullerMandel(const double p_COCoreMass, 
+double BaseStar::DrawRemnantKickMullerMandel(const double p_COCoreMass,
                                              const double p_Rand,
-                                             const double p_RemnantMass) const {					
+                                             const double p_RemnantMass) const {
 	double remnantKick = -1.0;
 	double muKick      = 0.0;
     double rand        = p_Rand;    //makes it possible to adjust if p_Rand is too low, to avoid getting stuck
@@ -2824,7 +2824,7 @@ double BaseStar::CalculateSNKickMagnitude(const double p_RemnantMass, const doub
 			    sigma = OPTIONS->KickMagnitudeDistributionSigmaForUSSN();
                 break;
 
-		    case SN_EVENT::AIC:                                                                     // AIC have 0 kick 
+		    case SN_EVENT::AIC:                                                                     // AIC have 0 kick
 			    sigma = 0;
                 break;
 
@@ -2858,18 +2858,18 @@ double BaseStar::CalculateSNKickMagnitude(const double p_RemnantMass, const doub
 		    default:                                                                                // unknown supernova event - shouldn't happen
                 error = ERROR::UNKNOWN_SN_EVENT;
 	    }
-    
+
 	    if (error == ERROR::NONE) {                                                                 // check for errors
                                                                                                     // no errors - draw kick magnitude
-            vK = DrawSNKickMagnitude(sigma, 
-                                    m_SupernovaDetails.COCoreMassAtCOFormation, 
+            vK = DrawSNKickMagnitude(sigma,
+                                    m_SupernovaDetails.COCoreMassAtCOFormation,
                                     m_SupernovaDetails.kickMagnitudeRandom,
-                                    p_EjectaMass, 
+                                    p_EjectaMass,
                                     p_RemnantMass);
         }
     }
     else {                                                                                          // user supplied kick parameters and wants to use supplied kick magnitude, so ...
-        vK = m_SupernovaDetails.initialKickParameters.magnitude;                                    // ... use it 
+        vK = m_SupernovaDetails.initialKickParameters.magnitude;                                    // ... use it
     }
 
 	if (error == ERROR::NONE) {                                                                     // check for errors
@@ -2923,10 +2923,10 @@ void BaseStar::CalculateSNAnomalies(const double p_Eccentricity) {
  *
  * void BaseStar::UpdateComponentVelocity(const Vector3d p_newVelocity)
  *
- * @param   [IN]    p_newVelocity               The new velocity vector 
+ * @param   [IN]    p_newVelocity               The new velocity vector
  */
 void BaseStar::UpdateComponentVelocity(const Vector3d p_newVelocity) {
-    m_ComponentVelocity += p_newVelocity;                        // Add new velocity to previous velocity 
+    m_ComponentVelocity += p_newVelocity;                        // Add new velocity to previous velocity
 }
 
 
@@ -3005,9 +3005,28 @@ void BaseStar::CalculateBindingEnergies(const double p_CoreMass, const double p_
  * @param   [IN]    p_Lambda                    Dimensionless parameter defining the binding energy
  * @return                                      Binding energy (erg)
  */
-double BaseStar::CalculateConvectiveEnvelopeBindingEnergy(const double p_CoreMass, const double p_ConvectiveEnvelopeMass, const double p_Radius, const double p_Lambda) {
-    return CalculateBindingEnergy(p_CoreMass, p_ConvectiveEnvelopeMass, p_Radius, p_Lambda);
+double BaseStar::CalculateConvectiveEnvelopeBindingEnergy(const double p_ConvectiveEnvelopeMass, const double p_Radius, const double p_Lambda) {
+
+    double convectiveEnvelopeBindingEnergy = 0.0;                                                         // default
+    //need to use a different defintion of lamba that is specific to my function
+	if (utils::Compare(p_Radius, 0.0) <= 0) {                                           // positive radius?
+        SHOW_WARN(ERROR::RADIUS_NOT_POSITIVE, "Binding energy = 0.0");                  // warn radius not positive
+	}
+	else if (utils::Compare(p_Lambda, 0.0) <= 0) {                                      // positive lambda?
+        // Not necesarily zero as sometimes lambda is made 0, or maybe weird values for certain parameters of the fit. Not sure about the latter.
+        SHOW_WARN(ERROR::LAMBDA_NOT_POSITIVE, "Binding energy = 0.0");                  // warn lambda not positive
+	}
+	else {                                                                              // calculate binding energy
+        // convert to CGS where necessary
+        double radius    = p_Radius * RSOL_TO_CM;
+        double convEnvMass   = p_ConvectiveEnvelopeMass * MSOL_TO_G;
+        double totalMass = Mass();                                          // total mass
+		convectiveEnvelopeBindingEnergy = G_CGS * totalMass * convEnvMass / (p_Lambda * radius);      // ergs/s
+	}
+
+	return convectiveEnvelopeBindingEnergy;
 }
+
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -3192,10 +3211,10 @@ STELLAR_TYPE BaseStar::UpdateAttributesAndAgeOneTimestep(const double p_DeltaMas
         stellarType = STELLAR_TYPE::MASSLESS_REMNANT;
     }
     else {
-        stellarType = ResolveSupernova();                                                   // handle supernova          
-        
+        stellarType = ResolveSupernova();                                                   // handle supernova
+
         if (stellarType == m_StellarType) {                                                 // still on phase?
-            
+
             UpdateAttributesAndAgeOneTimestepPreamble(p_DeltaMass, p_DeltaMass0, p_DeltaTime);      // apply mass changes and save current values if required
 
             if (p_ForceRecalculate                     ||                                   // force recalculate?
@@ -3248,12 +3267,12 @@ void BaseStar::AgeOneTimestepPreamble(const double p_DeltaTime) {
  *
  * This is so that a string is passed to the output, not a vector of stellar types.
  *
- * std::string BinaryConstituentStar::MassTransferDonorHistoryString() 
+ * std::string BinaryConstituentStar::MassTransferDonorHistoryString()
  *
  * @return                              string of dash-separated stellar type numbers
  */
 std::string BaseStar::MassTransferDonorHistoryString() const {
-    STYPE_VECTOR mtHistVec = m_MassTransferDonorHistory;      
+    STYPE_VECTOR mtHistVec = m_MassTransferDonorHistory;
     std::string mtHistStr  = "";
 
     if (mtHistVec.empty()) {    // This star was never a donor for MT
@@ -3310,7 +3329,7 @@ STELLAR_TYPE BaseStar::EvolveOnPhase() {
         m_COCoreMass  = CalculateCOCoreMassOnPhase();
         m_CoreMass    = CalculateCoreMassOnPhase();
         m_HeCoreMass  = CalculateHeCoreMassOnPhase();
-        
+
         m_Luminosity  = CalculateLuminosityOnPhase();
 
         std::tie(m_Radius, stellarType) = CalculateRadiusAndStellarTypeOnPhase();   // Radius and possibly new stellar type
@@ -3355,7 +3374,7 @@ STELLAR_TYPE BaseStar::ResolveEndOfPhase() {
             m_HeCoreMass  = CalculateHeCoreMassAtPhaseEnd();
 
             m_Luminosity  = CalculateLuminosityAtPhaseEnd();
-            
+
             m_Radius      = CalculateRadiusAtPhaseEnd();
 
             m_Mu          = CalculatePerturbationMuAtPhaseEnd();

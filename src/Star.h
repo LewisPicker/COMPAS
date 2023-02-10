@@ -53,11 +53,11 @@ public:
 
     Star();
 
-    Star(const unsigned long int p_RandomSeed, 
-         const double            p_MZAMS, 
-         const double            p_Metallicity, 
+    Star(const unsigned long int p_RandomSeed,
+         const double            p_MZAMS,
+         const double            p_Metallicity,
          const KickParameters    p_KickParameters,
-         const double            p_RotationalVelocity = -1.0); 
+         const double            p_RotationalVelocity = -1.0);
 
     Star(const Star& p_Star);
 
@@ -151,9 +151,9 @@ public:
                                              const double p_Radius)                                                 { m_Star->CalculateBindingEnergies(p_CoreMass, p_EnvMass, p_Radius); }
 
     double          CalculateConvectiveEnvelopeBindingEnergy(const double p_CoreMass, const double p_ConvectiveEnvelopeMass, const double p_Radius, const double p_Lambda)
-        { return m_Star->CalculateConvectiveEnvelopeBindingEnergy(p_CoreMass, p_ConvectiveEnvelopeMass, p_Radius, p_Lambda); }
+        { return m_Star->CalculateConvectiveEnvelopeBindingEnergy(p_ConvectiveEnvelopeMass, p_Radius, p_Lambda); }
     double          CalculateConvectiveEnvelopeMass()                                                               { return m_Star->CalculateConvectiveEnvelopeMass(); }
-    
+
     double          CalculateEddyTurnoverTimescale()                                                                { return m_Star->CalculateEddyTurnoverTimescale(); }
     double          CalculateGyrationRadius() const                                                                 { return m_Star->CalculateGyrationRadius(); }
 
@@ -168,9 +168,9 @@ public:
     double          CalculateMomentOfInertiaAU(const double p_RemnantRadius = 0.0) const                            { return m_Star->CalculateMomentOfInertiaAU(p_RemnantRadius); }
 
     void            CalculateSNAnomalies(const double p_Eccentricity)                                               { m_Star->CalculateSNAnomalies(p_Eccentricity); }
-    
-    double          CalculateSNKickMagnitude(const double p_RemnantMass, 
-                                             const double p_EjectaMass, 
+
+    double          CalculateSNKickMagnitude(const double p_RemnantMass,
+                                             const double p_EjectaMass,
 								             const STELLAR_TYPE p_StellarType)                                      { return m_Star->CalculateSNKickMagnitude(p_RemnantMass, p_EjectaMass, p_StellarType); }
 
 
@@ -236,7 +236,7 @@ public:
                                                                                                                                                          p_Stepsize,
                                                                                                                                                          p_MassGainPerTimeStep,
                                                                                                                                                          p_Epsilon);}
-    
+
     void        UpdateMinimumCoreMass()                                                                             { m_Star->UpdateMinimumCoreMass(); }
 
 

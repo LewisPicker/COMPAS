@@ -21,11 +21,11 @@ public:
 
     BaseStar();
 
-    BaseStar(const unsigned long int p_RandomSeed, 
-             const double            p_MZAMS, 
-             const double            p_Metallicity, 
+    BaseStar(const unsigned long int p_RandomSeed,
+             const double            p_MZAMS,
+             const double            p_Metallicity,
              const KickParameters    p_KickParameters,
-             const double            p_RotationalVelocity = -1.0); 
+             const double            p_RotationalVelocity = -1.0);
 
     virtual ~BaseStar() {}
 
@@ -135,8 +135,8 @@ public:
 
             void                SetSNCurrentEvent(SN_EVENT p_SNEvent)                           { m_SupernovaDetails.events.current |= p_SNEvent; }                                 // Set supernova primary event/state for current timestep
             void                SetSNPastEvent(const SN_EVENT p_SNEvent)                        { m_SupernovaDetails.events.past |= p_SNEvent; }                                    // Set supernova primary event/state for any past timestep
-            
-            void                UpdateComponentVelocity(const Vector3d p_newVelocity);	
+
+            void                UpdateComponentVelocity(const Vector3d p_newVelocity);
 
             void                UpdateMassTransferDonorHistory();
 
@@ -147,13 +147,13 @@ public:
             void            ApplyMassTransferRejuvenationFactor()                                               { m_Age *= CalculateMassTransferRejuvenationFactor(); }             // Apply age rejuvenation factor
 
             void            CalculateBindingEnergies(const double p_CoreMass, const double p_EnvMass, const double p_Radius);
-    
-            double          CalculateConvectiveEnvelopeBindingEnergy(const double p_CoreMass, const double p_ConvectiveEnvelopeMass, const double p_Radius, const double p_Lambda);
+
+            double          CalculateConvectiveEnvelopeBindingEnergy(const double p_ConvectiveEnvelopeMass, const double p_Radius, const double p_Lambda);
 
     virtual double          CalculateConvectiveEnvelopeMass() const                                             { return 0.0; }
 
     virtual double          CalculateCriticalMassRatio(const bool p_AccretorIsDegenerate) const                 { return 0.0; }                                                     // Default is 0.0
-                                                                                                                                                                                         
+
             double          CalculateDynamicalTimescale() const                                                 { return CalculateDynamicalTimescale_Static(m_Mass, m_Radius); }    // Use class member variables
 
             double          CalculateEddyTurnoverTimescale();
@@ -173,15 +173,15 @@ public:
 
     virtual double          CalculateMomentOfInertia(const double p_RemnantRadius = 0.0) const                  { return 0.0; }                                                     // Use inheritance hierarchy
     virtual double          CalculateMomentOfInertiaAU(const double p_RemnantRadius = 0.0) const                { return 0.0; }                                                     // Use inheritance hierarchy
-    
+
             double          CalculateNuclearTimescale() const                                                   { return CalculateNuclearTimescale_Static(m_Mass, m_Luminosity); }  // Use class member variables
-    
+
             double          CalculateOmegaCHE(const double p_MZAMS, const double p_Metallicity) const;
 
             double          CalculateRadialChange() const                                                       { return (utils::Compare(m_RadiusPrev,0)<=0)? 0 : std::abs(m_Radius - m_RadiusPrev) / m_RadiusPrev; }                    // Return fractional radial change (if previous radius is negative or zero, return 0 to avoid NaN
 
             double          CalculateRadialExpansionTimescale() const                                           { return CalculateRadialExpansionTimescale_Static(m_StellarType, m_StellarTypePrev, m_Radius, m_RadiusPrev, m_DtPrev); } // Use class member variables
-    
+
             void            CalculateSNAnomalies(const double p_Eccentricity);
 
             double          CalculateSNKickMagnitude(const double p_RemnantMass, const double p_EjectaMass, const STELLAR_TYPE p_StellarType);
@@ -230,10 +230,10 @@ public:
 
     virtual void            UpdateMinimumCoreMass() { }                                                                                                                             // Only set minimal core mass following Main Sequence mass transfer to MS age fraction of TAMS core mass; default is NO-OP
 
-    
+
     // printing functions
-    bool PrintDetailedOutput(const int p_Id, 
-                             const SSE_DETAILED_RECORD_TYPE p_RecordType = SSE_DETAILED_RECORD_TYPE::DEFAULT) const { 
+    bool PrintDetailedOutput(const int p_Id,
+                             const SSE_DETAILED_RECORD_TYPE p_RecordType = SSE_DETAILED_RECORD_TYPE::DEFAULT) const {
         return OPTIONS->DetailedOutput() ? LOGGING->LogSSEDetailedOutput(this, p_Id, p_RecordType) : true;                                                                          // Write record to SSE Detailed Output log file
     }
 
@@ -245,7 +245,7 @@ public:
         return LOGGING->LogStashedSSESupernovaDetails(this);                                                                                                                        // Write record to SSE Supernovae log file
     }
 
-    bool PrintSwitchLog() const { 
+    bool PrintSwitchLog() const {
         return OPTIONS->SwitchLog() ? LOGGING->LogSSESwitchLog(this) : true;                                                                                                        // Write record to SSE Switchlog log file
     }
 
@@ -324,7 +324,7 @@ protected:
 
 
     // constants only calculated once
-    double                  m_BaryonicMassOfMaximumNeutronStarMass;      // baryonic mass of MaximumNeutronStarMass 
+    double                  m_BaryonicMassOfMaximumNeutronStarMass;      // baryonic mass of MaximumNeutronStarMass
 
     // JR:
     // I initially implemented the following vectors as unordered_maps.  The code worked
@@ -362,10 +362,10 @@ protected:
     SupernovaDetailsT       m_SupernovaDetails;                         // Supernova attributes
     PulsarDetailsT          m_PulsarDetails;                            // Pulsar attributes
 
-    // Star vector velocity 
+    // Star vector velocity
     Vector3d                m_ComponentVelocity;                        // Isolated star velocity vector (binary's center-of-mass velocity for bound binary)
 
-    // Star mass transfer history 
+    // Star mass transfer history
     STYPE_VECTOR            m_MassTransferDonorHistory;                 // List of MT donor stellar types - mostly relevent for binary stars
 
     // member functions - alphabetically
